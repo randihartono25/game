@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selamat Ulang Tahun, Sayang!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #ffafbd, #ffc3a0);
+      height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+
+    .container {
+      background-color: rgba(255, 192, 203, 0.25);
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 700px;
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2em;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      transform: rotate(45deg);
+      animation: fall 5s linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -10px;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .slideshow {
+      margin-top: 30px;
+      position: relative;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .slideshow img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      transition: opacity 0.5s;
+      cursor: pointer;
+      clip-path: path("M150 270 
+        C -50 150, 0 0, 150 90 
+        C 300 0, 350 150, 150 270 Z");
+      background: pink;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #ff1493;
+      padding: 15px 25px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1.1em;
+      display: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Selamat Ulang Tahun, Cintaku!</h1>
+    <p id="message">
+      Hari ini hari spesial karena kamu lahir ke dunia untuk membawa cinta dan kebahagiaan. 
+      Aku bersyukur memilikimu. Aku sayang kamu.
+    </p>
+    <button onclick="showLove()">Klik untuk Kejutan!</button>
+
+    <div class="slideshow">
+      <img id="slideshow-img" src="img/oyen6.jpg" alt="Foto kenangan">
+    </div>
+  </div>
+
+  <div class="popup" id="popup">Kamu cantik banget di sini!</div>
+  <div class="hearts-container" id="hearts"></div>
+
+  <audio id="bg-music" loop>
+    <source src="sound/oyen.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <script>
+    const images = [
+      { src: "img/oyen1.jpg", message: "Kamu cantik banget di sini!" },
+      { src: "img/oyen2.jpg", message: "Momen ini tak akan aku lupakan." },
+      { src: "img/oyen3.jpg", message: "Kita terlihat sangat bahagia." },
+      { src: "img/oyen.jpg", message: "Terima kasih untuk cintamu." }
+    ];
+
+    let currentIndex = 0;
+    const slideshow = document.getElementById("slideshow-img");
+    const popup = document.getElementById("popup");
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % images.length;
+      slideshow.src = images[currentIndex].src;
+    }
+
+    function showPopup(message) {
+      popup.innerText = message;
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
+    }
+
+    slideshow.addEventListener("click", () => {
+      showPopup(images[currentIndex].message);
+    });
+
+    setInterval(nextSlide, 4000); // slideshow otomatis
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 3 + Math.random() * 2 + "s";
+      document.getElementById('hearts').appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    function showLove() {
+      document.getElementById("message").innerText =
+        "Semoga semua impianmu tercapai dan kita selalu bersama selamanya. Aku mencintaimu lebih dari kata-kata bisa ungkapkan.";
+      
+      // Mulai animasi hati
+      setInterval(createHeart, 200);
+
+      // Mainkan musik
+      const music = document.getElementById("bg-music");
+      music.play().catch((e) => {
+        console.log("Gagal memutar audio: ", e);
+      });
+    }
+  </script>
+</body>
+</html>
